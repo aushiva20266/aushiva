@@ -1,0 +1,36 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: aushiva-backend
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
+    envVars:
+      - key: SUPABASE_URL
+        sync: false # User must set this in Render Dashboard
+      - key: SUPABASE_KEY
+        sync: false # User must set this in Render Dashboard
+      - key: PORT
+        value: 5050
+      - key: NODE_ENV
+        value: production
+
+  # Frontend Static Site
+  - type: static
+    name: aushiva-frontend
+    runtime: static
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_BASE
+        fromService:
+          type: web
+          name: aushiva-backend
+          property: host
+      - key: VITE_USE_REMOTE_BACKEND
+        value: "true"
