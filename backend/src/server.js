@@ -249,7 +249,7 @@ app.use((req, res) => {
   res.status(404).json({ error: "Not Found" });
 });
 
-const port = process.env.PORT ? Number(process.env.PORT) : 5050;
+const port = process.env.PORT || 5050;
 
 // Centralized Error Handler
 app.use((err, req, res, next) => {
